@@ -1,37 +1,21 @@
 import express from "express";
 import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
 import imgur from "imgur";
 
 const router = express();
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads");
+  destination: (req, file, callBack) => {
+    callBack(null, "./uploads");
   },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, uuidv4() + "-" + fileName);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
-    }
+  filename: (req, file, callBack) => {
+    callBack(null, `BakeGoodies ${file.originalname}`);
   },
 });
 
-router.post("/", upload.single("imageUpload"), function (req, res) {
+const upload = multer({ storage: storage });
+
+router.post("/", upload.array("imageUpload", 5), function (req, res) {
   // req.file is the name of your file in the form above, here 'uploaded_file'
   // req.body will hold the text fields, if there were any
   console.log(req.file, req.body);
