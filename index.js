@@ -7,8 +7,10 @@ const app = express();
 process.on("unhandledRejection", (ex) => {
   throw ex;
 });
+
 routes(app);
 db();
+
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   logger.info(`Listening to port ${port}...`);
