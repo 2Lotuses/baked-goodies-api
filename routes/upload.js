@@ -3,7 +3,6 @@ import multer from "multer";
 import cloudinary from "cloudinary";
 import fs from "fs";
 import * as dotenv from "dotenv";
-import { send } from "process";
 
 dotenv.config();
 
