@@ -31,10 +31,16 @@ router.post("/", upload.array("imageUpload", 5), async (req, res) => {
     return res.status(400).send("No file were uploaded");
   }
 
-  const result = await cloudinary.uploader.upload(`./${req.files[0].path}`);
-  res.send(result.secure_url);
+  const imageArray = [];
 
-  fs.unlinkSync(`./${req.files[0].path}`);
+  for (let file of req.files) {
+    const result = await cloudinary.uploader.upload(`./${file.path}`);
+    imageArray.push(result.secure_url);
+
+    fs.unlinkSync(`./${file.path}`);
+  }
+
+  res.send(imageArray);
 });
 
 export default router;
