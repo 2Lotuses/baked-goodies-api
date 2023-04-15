@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema({
     type: String,
     maxlength: 255,
   },
-  image: Array,
+  images: Array,
   isProcessed: {
     type: Boolean,
     default: false,
@@ -38,7 +38,7 @@ export function schema(order) {
     date: Joi.date(),
     flavor: Joi.string().required(),
     description: Joi.string().max(255),
-    image: Joi.array(),
+    images: Joi.array(),
     isProcessed: Joi.boolean(),
     payment: Joi.string(),
     isFullfilled: Joi.boolean(),
