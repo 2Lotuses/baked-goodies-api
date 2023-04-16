@@ -1,11 +1,12 @@
 import express from "express";
 import Customer from "../models/customer.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
 Customer.collection.createIndex({ "customer.email": 1 });
 
-router.get("/me", async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   const customers = await Customer.findById(req.user._id);
   res.send(customers);
 });
@@ -24,7 +25,6 @@ router.post("/", async (req, res) => {
   await customer.save();
 
   const token = customer.generateAuthToken();
-  console.log(token);
   res.header("x-auth-token", token).send(customer);
 });
 
