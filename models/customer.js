@@ -31,8 +31,14 @@ export const customerSchema = new mongoose.Schema({
 
 customerSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
-    { _id: this._id, orders: this.orders },
-    config.get(process.env.JWT_KEY)
+    {
+      _id: this._id,
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      orders: this.orders,
+    },
+    process.env.JWT_KEY
   );
   return token;
 };

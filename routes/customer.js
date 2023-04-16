@@ -20,7 +20,10 @@ router.post("/", async (req, res) => {
   });
 
   await customer.save();
-  res.send(customer);
+
+  const token = customer.generateAuthToken();
+  console.log(token);
+  res.header("x-auth-token", token).send(customer);
 });
 
 export default router;
