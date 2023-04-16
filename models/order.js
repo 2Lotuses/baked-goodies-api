@@ -1,49 +1,46 @@
 import mongoose from "mongoose";
-// @ts-ignore
-import Joi from "joi";
+import { customerSchema } from "./customer.js";
+
 const orderSchema = new mongoose.Schema({
-  orderer: {
-    type: String,
-    maxlength: 30,
+  customer: {
+    type: customerSchema,
+    required: true,
   },
-  date: {
+  orderDate: {
     type: Date,
     default: Date.now,
+  },
+  promiseDate: {
+    type: Date,
+    require: true,
   },
   flavor: {
     type: String,
     required: true,
   },
-  description: {
+  shape: {
+    type: String,
+    required: true,
+  },
+  orderDetails: {
     type: String,
     maxlength: 255,
   },
   images: Array,
+  payment: {
+    type: String,
+    required: true,
+  },
+  comment: { type: String, maxlength: 255 },
   isProcessed: {
     type: Boolean,
     default: false,
   },
-  payment: String,
   isFullfilled: {
     type: Boolean,
     default: false,
   },
-  comment: { type: String, maxlength: 255 },
 });
-export const Order = mongoose.model("Order", orderSchema);
-export function schema(order) {
-  const schema = Joi.object({
-    _id: Joi.string().hex().length(24),
-    orderer: Joi.string().max(30),
-    date: Joi.date(),
-    flavor: Joi.string().required(),
-    description: Joi.string().max(255),
-    images: Joi.array(),
-    isProcessed: Joi.boolean(),
-    payment: Joi.string(),
-    isFullfilled: Joi.boolean(),
-    comment: Joi.string().max(255),
-  });
-  return Joi.validate(order, schema);
-}
+const Order = mongoose.model("Order", orderSchema);
+
 export default Order;

@@ -1,8 +1,9 @@
 import express from "express";
 import Order from "../models/order.js";
-// @ts-ignore
-import Joi from "joi";
+import Customer from "../models/customer.js";
+
 const router = express.Router();
+
 router.get("/", async (req, res) => {
   const orders = await Order.find().sort("date");
   res.send(orders);
@@ -13,31 +14,44 @@ router.get("/:id", async (req, res) => {
     return res.status(404).send("The order with the given ID was not found.");
   res.send(order);
 });
+
 router.post("/", async (req, res) => {
-  const { error } = Joi.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  const customer = await Customer.findById(req.body.customerId);
+  if (!customer) return res.status(404).send("Invalid Customer");
+
   const order = new Order({
-    orderer: req.body.orderer,
+    customer: customer,
+    promiseDate: req.body.promiseDate,
     flavor: req.body.flavor,
-    description: req.body.description,
+    shape: req.body.shape,
+    orderDetails: req.body.orderDetails,
     images: req.body.images,
-    isProcessed: req.body.isProcessed,
     payment: req.body.payment,
-    isFullfilled: req.body.payment,
     comment: req.body.comment,
+    isProcessed: req.body.isProcessed,
+    isFullfilled: req.body.isFullfilled,
   });
   await order.save();
+  await Customer.findByIdAndUpdate(
+    customer._id,
+    {
+      $push: { orders: order._id },
+    },
+    { new: true }
+  );
+
   res.send(order);
 });
+
 router.put("/:id", async (req, res) => {
-  const { error } = Joi.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
   const order = await Order.findByIdAndUpdate(
     req.params.id,
     {
-      orderer: req.body.orderer,
+      customerId: req.body.customerId,
+      promiseDate: req.body.promiseDate,
       flavor: req.body.flavor,
-      description: req.body.description,
+      shape: req.body.shape,
+      orderDetails: req.body.orderDetails,
       images: req.body.images,
       isProcessed: req.body.isProcessed,
       payment: req.body.payment,
