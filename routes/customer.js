@@ -6,7 +6,7 @@ const router = express.Router();
 
 Customer.collection.createIndex({ "customer.email": 1 });
 
-router.get("/me", auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const customers = await Customer.findById(req.user._id);
   res.send(customers);
 });

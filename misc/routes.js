@@ -5,7 +5,7 @@ import Customer from "../routes/customer.js";
 
 export default function (app) {
   app.use(express.json({ extended: false }));
-  app.use("/api/customer", Customer);
-  app.use("/api/order", Order);
-  app.use("/api/upload", Upload);
+  app.use("/customer", Customer);
+  app.use("/order", Order);
+  app.use("/upload", Upload);
 }
