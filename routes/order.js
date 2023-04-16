@@ -64,6 +64,7 @@ router.put("/:id", async (req, res) => {
     return res.status(404).send("The order with the given ID was not found.");
   res.send(order);
 });
+
 router.delete("/:id", async (req, res) => {
   const order = await Order.findByIdAndRemove(req.params.id);
   if (!order)
