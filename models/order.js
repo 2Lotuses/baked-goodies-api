@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
     default: Date.now,
   },
   promiseDate: {
-    type: Date,
+    type: String,
     require: true,
   },
   flavor: {
