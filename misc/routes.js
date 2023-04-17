@@ -7,7 +7,7 @@ import Customer from "../routes/customer.js";
 export default function (app) {
   app.use(
     cors({
-      origin: "https://baked-goodies.vercel.app/",
+      origin: "https://baked-goodies.vercel.app",
     })
   );
   app.use(express.json({ extended: false }));
