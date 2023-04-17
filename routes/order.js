@@ -8,6 +8,7 @@ router.get("/", async (req, res) => {
   const orders = await Order.find().sort("date");
   res.send(orders);
 });
+
 router.get("/:id", async (req, res) => {
   const order = await Order.findById(req.params.id);
   if (!order)
