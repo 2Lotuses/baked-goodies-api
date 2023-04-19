@@ -1,11 +1,12 @@
 import express from "express";
 import Order from "../models/order.js";
 import Customer from "../models/customer.js";
+import customer from "../middleware/customer.js";
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const orders = await Order.find().sort("date");
+  const orders = await Order.find().sort({ date: 1 }).lean();
   res.send(orders);
 });
 
@@ -16,9 +17,8 @@ router.get("/:id", async (req, res) => {
   res.send(order);
 });
 
-router.post("/", async (req, res) => {
-  const customer = await Customer.findById(req.body.customerId);
-  if (!customer) return res.status(404).send("Invalid Customer");
+router.post("/", customer, async (req, res) => {
+  const customer = await Customer.findOne({ email: req.user.email });
 
   const order = new Order({
     customer: customer,
@@ -28,10 +28,8 @@ router.post("/", async (req, res) => {
     orderDetails: req.body.orderDetails,
     images: req.body.images,
     payment: req.body.payment,
-    comment: req.body.comment,
-    isProcessed: req.body.isProcessed,
-    isFullfilled: req.body.isFullfilled,
   });
+
   await order.save();
   await Customer.findByIdAndUpdate(
     customer._id,
@@ -40,7 +38,6 @@ router.post("/", async (req, res) => {
     },
     { new: true }
   );
-
   res.send(order);
 });
 
