@@ -22,6 +22,7 @@ router.post("/", customer, async (req, res) => {
 
   const order = new Order({
     customer: customer,
+    orderDate: req.body.promiseDate,
     promiseDate: req.body.promiseDate,
     flavor: req.body.flavor,
     shape: req.body.shape,
@@ -46,6 +47,7 @@ router.put("/:id", async (req, res) => {
     req.params.id,
     {
       customerId: req.body.customerId,
+      orderDate: req.body.orderDate,
       promiseDate: req.body.promiseDate,
       flavor: req.body.flavor,
       shape: req.body.shape,

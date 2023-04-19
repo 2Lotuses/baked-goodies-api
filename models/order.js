@@ -8,8 +8,8 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     orderDate: {
-      type: Date,
-      default: Date.now,
+      type: String,
+      require: true,
     },
     promiseDate: {
       type: String,
