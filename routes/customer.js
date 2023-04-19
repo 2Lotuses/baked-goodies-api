@@ -1,5 +1,6 @@
 import express from "express";
 import Customer from "../models/customer.js";
+import Order from "../models/order.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
@@ -7,8 +8,14 @@ const router = express.Router();
 Customer.collection.createIndex({ "customer.email": 1 });
 
 router.get("/", auth, async (req, res) => {
-  const customers = await Customer.findById(req.user._id);
-  res.send(customers);
+  const customer = await Customer.findById(req.user._id);
+  const order = await Order.find({
+    "customer._id": customer._id,
+    isPaid: false,
+  })
+    .sort({ date: 1 })
+    .lean();
+  res.send(order);
 });
 
 router.put("/:id", async (req, res) => {

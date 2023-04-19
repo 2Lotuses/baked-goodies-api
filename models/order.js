@@ -33,13 +33,9 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     comment: { type: String, maxlength: 255 },
-    isProcessed: {
-      type: Boolean,
-      default: false,
-    },
-    isFullfilled: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      default: "processing",
     },
     isPaid: {
       type: Boolean,
