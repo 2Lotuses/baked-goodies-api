@@ -51,10 +51,12 @@ router.put("/:id", async (req, res) => {
       shape: req.body.shape,
       orderDetails: req.body.orderDetails,
       images: req.body.images,
-      isProcessed: req.body.isProcessed,
       payment: req.body.payment,
-      isFullfilled: req.body.payment,
       comment: req.body.comment,
+      isFullfilled: req.body.payment,
+      isProcessed: req.body.isProcessed,
+      isPaid: req.body.isPaid,
+      price: req.body.price,
     },
     { new: true }
   );
