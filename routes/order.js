@@ -6,7 +6,7 @@ import customer from "../middleware/customer.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const orders = await Order.find().sort({ date: 1 }).lean();
+  const orders = await Order.find(req.query).sort({ date: 1 }).lean();
   res.send(orders);
 });
 

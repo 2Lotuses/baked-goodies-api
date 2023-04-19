@@ -1,13 +1,15 @@
 import express from "express";
 import cors from "cors";
-import Order from "../routes/order.js";
-import Upload from "../routes/upload.js";
-import Customer from "../routes/customer.js";
+import order from "../routes/order.js";
+import upload from "../routes/upload.js";
+import customer from "../routes/customer.js";
+import admin from "../routes/admin.js";
 
 export default function (app) {
   app.use(cors());
   app.use(express.json({ extended: false }));
-  app.use("/customer", Customer);
-  app.use("/order", Order);
-  app.use("/upload", Upload);
+  app.use("/admin", admin);
+  app.use("/customer", customer);
+  app.use("/order", order);
+  app.use("/upload", upload);
 }
