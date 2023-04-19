@@ -41,7 +41,6 @@ customerSchema.methods.generateAuthToken = function () {
       name: this.name,
       email: this.email,
       phone: this.phone,
-      orders: this.orders,
     },
     process.env.JWT_KEY
   );
