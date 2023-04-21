@@ -6,7 +6,6 @@ dotenv.config();
 
 export default async function (req, res, next) {
   let token = req.cookies.token;
-  console.log(!token);
   // if (!token) return res.status(401).send("Access denied. No token provided.");
   if (!token) {
     let customer = await Customer.findOne({ email: req.body.email });
