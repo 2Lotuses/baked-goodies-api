@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findOne({ _id: req.params.id, isPaid: false });
   if (!order)
     return res.status(404).send("The order with the given ID was not found.");
   res.send(order);
@@ -22,7 +22,7 @@ router.post("/", customer, async (req, res) => {
 
   const order = new Order({
     customer: customer,
-    orderDate: req.body.promiseDate,
+    orderDate: req.body.orderDate,
     promiseDate: req.body.promiseDate,
     flavor: req.body.flavor,
     shape: req.body.shape,
@@ -35,7 +35,12 @@ router.post("/", customer, async (req, res) => {
   await Customer.findByIdAndUpdate(
     customer._id,
     {
-      $push: { orders: order._id },
+      $push: {
+        orders: {
+          $each: [order._id],
+          $positon: 0,
+        },
+      },
     },
     { new: true }
   );
