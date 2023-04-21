@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const order = await Order.findOne({ _id: req.params.id, isPaid: false });
+  const order = await Order.findOne({ _id: req.params.id, isDone: false });
   if (!order)
     return res.status(404).send("The order with the given ID was not found.");
   res.send(order);
@@ -61,8 +61,8 @@ router.put("/:id", async (req, res) => {
       payment: req.body.payment,
       comment: req.body.comment,
       status: req.body.status,
-      isPaid: req.body.isPaid,
       price: req.body.price,
+      isDone: req.body.isDone,
     },
     { new: true }
   );

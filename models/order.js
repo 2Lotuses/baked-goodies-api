@@ -37,14 +37,14 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: "processing",
     },
-    isPaid: {
-      type: Boolean,
-      default: false,
-    },
     price: {
       type: Number,
       min: 0,
       default: 0,
+    },
+    isDone: {
+      type: Boolean,
+      default: false,
     },
   },
   { collection: "orders" }
